@@ -1,0 +1,254 @@
+<title>Orbit — Rulesheet</title>
+<style>
+  :root{
+    --paper:#f6f8fc; --paper-2:#eef1f9; --ink:#161d33; --ink-2:#3c455f;
+    --ink-faint:#6b7492; --rule:#cdd4e6; --rule-soft:#e0e5f1;
+    --gold:#c98a12; --gold-soft:#f0e2c2; --cyan:#0f8f97; --cyan-soft:#cdeef0;
+    --crimson:#c23a52; --panel:#ffffff;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#0c1122;--paper-2:#131a30;--ink:#e6ebfb;--ink-2:#b6bfdd;
+      --ink-faint:#8892b4;--rule:#2a3352;--rule-soft:#20283f;
+      --gold:#f0be5c;--gold-soft:#3a2f13;--cyan:#4fd2d8;--cyan-soft:#123236;
+      --crimson:#f0748a;--panel:#161d34;}
+  }
+  :root[data-theme="dark"]{--paper:#0c1122;--paper-2:#131a30;--ink:#e6ebfb;--ink-2:#b6bfdd;
+    --ink-faint:#8892b4;--rule:#2a3352;--rule-soft:#20283f;
+    --gold:#f0be5c;--gold-soft:#3a2f13;--cyan:#4fd2d8;--cyan-soft:#123236;
+    --crimson:#f0748a;--panel:#161d34;}
+  :root[data-theme="light"]{--paper:#f6f8fc;--paper-2:#eef1f9;--ink:#161d33;--ink-2:#3c455f;
+    --ink-faint:#6b7492;--rule:#cdd4e6;--rule-soft:#e0e5f1;
+    --gold:#c98a12;--gold-soft:#f0e2c2;--cyan:#0f8f97;--cyan-soft:#cdeef0;
+    --crimson:#c23a52;--panel:#ffffff;}
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .sheet{background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;padding:clamp(18px,3.5vw,40px)}
+  .page{max-width:940px;margin:0 auto;background:var(--panel);
+    border:1px solid var(--rule);border-radius:14px;overflow:hidden;
+    box-shadow:0 20px 60px -30px rgba(10,20,50,.4)}
+
+  .masthead{display:flex;align-items:baseline;justify-content:space-between;
+    gap:18px;flex-wrap:wrap;padding:26px 32px 20px;
+    border-bottom:2px solid var(--ink);
+    background:linear-gradient(180deg,var(--paper-2),transparent)}
+  .masthead .title h1{font-family:var(--serif);font-weight:600;margin:0;
+    font-size:clamp(34px,6vw,52px);letter-spacing:.16em;line-height:1}
+  .masthead .title p{margin:.5em 0 0;color:var(--ink-2);font-size:14px;
+    max-width:46ch}
+  .masthead .stamp{font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+    text-align:right;letter-spacing:.06em;line-height:1.7;white-space:nowrap}
+  .stamp b{color:var(--ink)}
+
+  .grid{display:grid;grid-template-columns:1fr 1.2fr;gap:0}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+  .col{padding:22px 32px}
+  .col.left{border-right:1px solid var(--rule-soft);background:var(--paper)}
+  @media (max-width:720px){.col.left{border-right:none;border-bottom:1px solid var(--rule-soft)}}
+
+  h2.sec{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+    padding-bottom:6px;border-bottom:1px solid var(--rule-soft)}
+  .block{margin-bottom:22px}
+  .block:last-child{margin-bottom:0}
+  p{margin:6px 0;font-size:13.5px;color:var(--ink-2)}
+  p b, li b{color:var(--ink);font-weight:600}
+
+  svg.diagram{width:100%;height:auto;display:block;margin:2px auto 10px;max-width:280px}
+  .legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+    font-size:12px;color:var(--ink-2);margin-top:2px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:12px;height:12px;border-radius:50%}
+  .sw-gold{background:var(--gold)} .sw-cyan{background:var(--cyan)}
+  .sw-spoke{width:14px;height:0;border-top:2px solid var(--gold);border-radius:0}
+
+  /* SVG fills need CSS (var() is ignored in raw presentation attributes) */
+  .d-band{fill:none;stroke:var(--rule);stroke-width:1}
+  .d-hub{fill:var(--paper-2);stroke:var(--rule);stroke-width:1}
+  .d-spoke{stroke:var(--gold);stroke-width:1.6;opacity:.8}
+  .d-lbl{font-family:var(--mono);font-size:9px;fill:var(--ink-faint)}
+  .gate-g{fill:var(--gold)} .gate-c{fill:var(--cyan)}
+  .gl-spoke{stroke:var(--gold);stroke-width:1.4;opacity:.55}
+  .gl-me{fill:var(--gold)}
+  .gl-foe{fill:var(--panel);stroke:var(--crimson);stroke-width:2}
+  .gl-empty{fill:var(--rule)}
+
+  .actions{list-style:none;padding:0;margin:0;counter-reset:act}
+  .actions li{position:relative;padding:10px 0 10px 40px;
+    border-top:1px solid var(--rule-soft)}
+  .actions li:first-child{border-top:none}
+  .actions li::before{counter-increment:act;content:counter(act);
+    position:absolute;left:0;top:9px;width:26px;height:26px;border-radius:50%;
+    display:grid;place-items:center;font-family:var(--serif);font-size:14px;
+    color:var(--ink);border:1.5px solid var(--ink)}
+  .actions .name{font-family:var(--serif);font-size:16px;color:var(--ink);
+    font-weight:600;display:block;margin-bottom:1px}
+
+  .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 4px}
+  .cap{border:1px solid var(--rule-soft);border-radius:9px;padding:8px 6px 6px;
+    text-align:center;background:var(--paper)}
+  .cap svg{width:34px;height:auto;display:block;margin:0 auto 5px}
+  .cap .lbl{font-size:11px;color:var(--ink-2);line-height:1.25}
+  .cap .lbl b{display:block;color:var(--ink);font-size:11.5px}
+
+  .win{display:flex;align-items:center;gap:14px;background:var(--paper-2);
+    border:1px solid var(--rule);border-radius:10px;padding:12px 16px}
+  .win .goal{font-family:var(--serif);font-size:30px;color:var(--gold);
+    font-weight:600;line-height:1}
+  .win .goal small{font-size:13px;color:var(--ink-faint);font-family:var(--sans);
+    display:block;letter-spacing:.04em}
+
+  .tip{font-size:12.5px;color:var(--ink-faint);font-style:italic;
+    border-left:2px solid var(--gold);padding:2px 0 2px 12px;margin-top:8px}
+
+  footer{padding:14px 32px;border-top:1px solid var(--rule-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    font-size:11.5px;color:var(--ink-faint);background:var(--paper)}
+  footer b{color:var(--ink-2)}
+
+  @media print{
+    .sheet{padding:0;background:#fff}
+    .page{border:none;box-shadow:none;border-radius:0;max-width:none}
+    .win, .cap, .col.left{background:#fff}
+    body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+
+<div class="sheet">
+ <div class="page">
+
+  <div class="masthead">
+    <div class="title">
+      <h1>ORBIT</h1>
+      <p>A two-player game of four concentric, rotating rings. Turn the heavens to
+         trap your rival's moons — first to three captures wins.</p>
+    </div>
+    <div class="stamp">
+      <b>2 players</b> · ages 10+<br>
+      8 moons each<br>
+      10–20 min
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="col left">
+      <div class="block">
+        <h2 class="sec">The board</h2>
+        <svg class="diagram" viewBox="0 0 240 240" role="img"
+             aria-label="Four concentric rings of 6, 12, 18 and 24 cells with six spokes and four gates">
+          <circle class="d-band" cx="120" cy="120" r="112"/>
+          <circle class="d-band" cx="120" cy="120" r="88"/>
+          <circle class="d-band" cx="120" cy="120" r="64"/>
+          <circle class="d-band" cx="120" cy="120" r="40"/>
+          <circle class="d-hub"  cx="120" cy="120" r="20"/>
+          <!-- six spokes (three diameters) -->
+          <g class="d-spoke">
+            <line x1="120" y1="8"  x2="120" y2="232"/>
+            <line x1="217" y1="64" x2="23"  y2="176"/>
+            <line x1="217" y1="176" x2="23" y2="64"/>
+          </g>
+          <!-- ring size labels, one per band up the vertical spoke -->
+          <g class="d-lbl" text-anchor="middle">
+            <text x="133" y="93">6</text>
+            <text x="133" y="71">12</text>
+            <text x="133" y="47">18</text>
+            <text x="134" y="24">24</text>
+          </g>
+          <!-- gates -->
+          <circle class="gate-g" cx="120" cy="8"   r="5"/>
+          <circle class="gate-g" cx="120" cy="232" r="5"/>
+          <circle class="gate-c" cx="217" cy="64"  r="5"/>
+          <circle class="gate-c" cx="23"  cy="176" r="5"/>
+        </svg>
+        <div class="legend">
+          <span><i class="swatch sw-spoke"></i>spoke</span>
+          <span><i class="swatch sw-gold"></i>Gold gate</span>
+          <span><i class="swatch sw-cyan"></i>Cyan gate</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2 class="sec">Setup</h2>
+        <p>Four rings hold <b>6 / 12 / 18 / 24</b> cells from the core outward — 60
+           in all. The six <b>spokes</b> are the angles where all four rings line up;
+           everything radial happens on them.</p>
+        <p>Each player keeps <b>8 moons</b> in reserve. Gold enters at the top and
+           bottom gates; Cyan at the two side gates. The board starts empty.</p>
+      </div>
+
+      <div class="block">
+        <h2 class="sec">Winning</h2>
+        <div class="win">
+          <div class="goal">3<small>captures</small></div>
+          <p style="margin:0">Remove three enemy moons and the game is yours. If a
+             time limit is used, most captures wins.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col right">
+      <div class="block">
+        <h2 class="sec">Your turn — take one action</h2>
+        <ul class="actions">
+          <li><span class="name">Launch</span>
+            Place a moon from reserve onto one of your two gates on the outer ring,
+            if that cell is empty.</li>
+          <li><span class="name">Step</span>
+            Slide one moon one cell along its ring into an empty cell — or, only
+            while it stands on a spoke, one ring inward or outward to the empty
+            aligned cell.</li>
+          <li><span class="name">Rotate &amp; ride</span>
+            Turn any one ring a single notch; every moon on it travels, yours and
+            theirs. You may then take one free <b>follow-through</b> step with one of
+            your moons on that ring. You may not immediately reverse the opponent's
+            last rotation.</li>
+        </ul>
+        <p class="tip">Every rotation is a trade — it moves their moons too. Skill
+           is finding the turn that helps you more than it helps them.</p>
+      </div>
+
+      <div class="block">
+        <h2 class="sec">Capturing — only on the spokes</h2>
+        <p>Trap a lone enemy moon between two of yours on the neighbouring rings of
+           one spoke. Traps are checked after every action, in the mover's favour.</p>
+        <div class="caps" id="caps"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span><b>Orbit</b> · abstract strategy for two</span>
+    <span>Sandwich the middle · pin the edges · rotate to line them up</span>
+  </footer>
+
+ </div>
+</div>
+
+<script>
+// Capture glyphs: a vertical spoke of 4 nodes (ring 1 top → ring 4 bottom).
+// filled = your moon, ringed crimson = the captured enemy.
+function glyph(cfg){
+  // cfg: array of 4 in {"me","foe","-"}
+  const ys=[8,20,32,44];
+  let s=`<svg viewBox="0 0 34 52" aria-hidden="true"><line class="gl-spoke" x1="17" y1="8" x2="17" y2="44"/>`;
+  cfg.forEach((c,i)=>{
+    if(c==="me") s+=`<circle class="gl-me" cx="17" cy="${ys[i]}" r="5"/>`;
+    else if(c==="foe") s+=`<circle class="gl-foe" cx="17" cy="${ys[i]}" r="5"/>`;
+    else s+=`<circle class="gl-empty" cx="17" cy="${ys[i]}" r="2.4"/>`;
+  });
+  return s+`</svg>`;
+}
+const CAPS=[
+  {cfg:["me","foe","me","-"], t:"Sandwich", d:"enemy on ring 2"},
+  {cfg:["-","me","foe","me"], t:"Sandwich", d:"enemy on ring 3"},
+  {cfg:["foe","me","me","-"], t:"Pin", d:"crushed on the core"},
+  {cfg:["-","me","me","foe"], t:"Pin", d:"crushed on the rim"},
+];
+document.getElementById("caps").innerHTML = CAPS.map(c=>
+  `<div class="cap">${glyph(c.cfg)}<div class="lbl"><b>${c.t}</b>${c.d}</div></div>`
+).join("");
+</script>
