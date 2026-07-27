@@ -8,6 +8,11 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.2",
+    "discord.js": "^14.27.0",
+    "dotenv": "^17.4.2",
     "ws": "^8.18.0"
-  }
+  },
+  "author": "",
+  "license": "ISC"
 }

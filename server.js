@@ -16,6 +16,8 @@ const path = require("path");
 const { WebSocketServer } = require("ws");
 const crypto = require("crypto");
 
+require("./bot/bot.js") // Comment if disable Discord Bot
+
 const PORT = process.env.PORT || 8080;
 const ROOT = __dirname;
 const DEFAULT_CLOCK = 10 * 60 * 1000; // 10 minutes per player
